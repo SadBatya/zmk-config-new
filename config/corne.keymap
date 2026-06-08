@@ -93,8 +93,18 @@
     };
 };
 
-/* nice!view использует SPI0; Corne-оверлей включает I2C0 (OLED) после nice_view_adapter,
-   поэтому явно отключаем I2C0 последним — keymap-файл идёт последним оверлеем в билде */
+/* nice!view использует SPI0; Corne-оверлей включает I2C0 (OLED) после nice_view_adapter.
+   Keymap идёт последним оверлеем, поэтому здесь:
+   1) отключаем I2C0 (иначе конфликт SPI0/TWIM0 на одном хардварном инстансе)
+   2) явно возвращаем chosen display на nice_view (SPI), т.к. Corne-оверлей
+      переопределяет zephyr,display обратно на OLED (дочернее устройство I2C0,
+      которое не компилируется при disabled шине → undefined reference) */
 &i2c0 {
     status = "disabled";
+};
+
+/ {
+    chosen {
+        zephyr,display = &nice_view;
+    };
 };
