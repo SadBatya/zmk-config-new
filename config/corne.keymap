@@ -1,12 +1,12 @@
 /*
- * Python Developer Layout — Corne MX (Matvey Keyboard)
+ * Frontend Developer Layout — Corne MX (Matvey Keyboard)
  *
  * Thumbs: [ GUI | SYM | Space ]   [ Enter | NAV | Del ]
  *
  * Layer 0: Base — QWERTY
- * Layer 1: SYM  — Python: _, :, (), [], {}, "", '', @, #, операторы
+ * Layer 1: SYM  — JS/TS/JSX/CSS: {}, [], (), <>, "", '', `, =>, ;, :, @, $, #
  * Layer 2: NAV  — Цифры, стрелки, F-клавиши
- * Layer 3: SYS  — Bluetooth (SYM + NAV одновременно)
+ * Layer 3: SYS  — Bluetooth + медиаклавиши (SYM + NAV одновременно)
  */
 
 #include <behaviors.dtsi>
@@ -14,6 +14,14 @@
 #include <dt-bindings/zmk/bt.h>
 
 / {
+    macros {
+        arrow: arrow {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp EQUAL &kp GT>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -34,23 +42,24 @@
         };
 
         sym_layer {
-// Python symbols — оптимизировано для Python-разработчика
+// JS/TS/JSX/CSS symbols — оптимизировано для фронтенд-разработчика
 // ╭──────┬─────┬─────┬─────┬─────┬─────╮   ╭─────┬─────┬─────┬─────┬─────┬──────╮
 // │  ~   │  !  │  @  │  #  │  $  │  %  │   │  ^  │  &  │  *  │  (  │  )  │ DEL  │
-// │      │  `  │  {  │  }  │  [  │  ]  │   │  _  │  =  │  +  │  -  │  :  │  |   │
-// │      │     │  \  │  "  │  '  │  @  │   │  /  │  ?  │  <  │  >  │  ;  │  ~   │
+// │      │  `  │  {  │  }  │  [  │  ]  │   │  _  │  =  │  <  │  >  │  :  │  |   │
+// │      │     │  \  │  "  │  '  │ =>  │   │  /  │  ?  │  +  │  -  │  ;  │  ~   │
 // ╰──────┴─────┴─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┴─────┴─────┴──────╯
 //                    │ GUI │ --- │ SPC │   │ ENT │ SYS │ DEL │
 //                    ╰─────┴─────┴─────╯   ╰─────┴─────┴─────╯
 //
-// _ и : на home row правой руки — snake_case, def/if/for/class, срезы, словари
-// {}, [] на home row левой руки — dict literals, list, slice
-// "", '' на нижнем ряду — строки и f-строки
-// @ на нижнем ряду (дополнительно к верхнему) — декораторы
+// <> на home row правой руки — JSX-теги (<div>), дженерики TS (Array<T>)
+// {}, [] на home row левой руки — объекты, деструктуризация, массивы
+// `  на home row левой руки — template literals (`${...}`)
+// => на нижнем ряду — стрелочные функции (const f = () => {})
+// "", '' на нижнем ряду — строки; : и ; на home row/нижнем ряду — типы TS, конец выражения
             bindings = <
    &kp TILDE  &kp EXCL   &kp AT    &kp HASH  &kp DLLR  &kp PRCNT    &kp CARET  &kp AMPS   &kp ASTRK  &kp LPAR   &kp RPAR   &kp DEL
-   &trans     &kp GRAVE  &kp LBRC  &kp RBRC  &kp LBKT  &kp RBKT     &kp UNDER  &kp EQUAL  &kp PLUS   &kp MINUS  &kp COLON  &kp PIPE
-   &trans     &trans     &kp BSLH  &kp DQT   &kp SQT   &kp AT       &kp FSLH   &kp QMARK  &kp LT     &kp GT     &kp SEMI   &kp TILDE
+   &trans     &kp GRAVE  &kp LBRC  &kp RBRC  &kp LBKT  &kp RBKT     &kp UNDER  &kp EQUAL  &kp LT     &kp GT     &kp COLON  &kp PIPE
+   &trans     &trans     &kp BSLH  &kp DQT   &kp SQT   &arrow       &kp FSLH   &kp QMARK  &kp PLUS   &kp MINUS  &kp SEMI   &kp TILDE
                                    &kp LGUI  &trans    &kp SPACE    &kp RET    &mo 3      &kp DEL
             >;
         };
@@ -75,18 +84,20 @@
         };
 
         sys_layer {
-// BLE управление (SYM + NAV одновременно)
+// BLE управление + медиаклавиши (SYM + NAV одновременно)
 // ╭──────┬─────┬─────┬─────┬─────┬─────╮   ╭─────┬─────┬─────┬─────┬─────┬──────╮
-// │BTCLR │ BT1 │ BT2 │ BT3 │ BT4 │ BT5 │   │     │     │     │     │     │      │
-// │      │     │     │     │     │     │   │     │     │     │     │     │      │
+// │BTCLR │ BT1 │ BT2 │ BT3 │ BT4 │ BT5 │   │PREV │STOP │ PP  │NEXT │VOL- │ VOL+ │
+// │      │     │     │     │     │     │   │MUTE │     │     │     │     │      │
 // │      │     │     │     │     │     │   │     │     │     │     │     │      │
 // ╰──────┴─────┴─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┴─────┴─────┴──────╯
 //                    │ GUI │ --- │ SPC │   │ ENT │ --- │ DEL │
 //                    ╰─────┴─────┴─────╯   ╰─────┴─────┴─────╯
+//
+// PP — Play/Pause; PREV/NEXT — предыдущий/следующий трек; VOL-/VOL+ — громкость
             bindings = <
-   &bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &trans  &trans  &trans  &trans  &trans  &trans
-   &trans      &trans        &trans        &trans        &trans        &trans          &trans  &trans  &trans  &trans  &trans  &trans
-   &trans      &trans        &trans        &trans        &trans        &trans          &trans  &trans  &trans  &trans  &trans  &trans
+   &bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &kp C_PREV  &kp C_STOP  &kp C_PP  &kp C_NEXT  &kp C_VOL_DN  &kp C_VOL_UP
+   &trans      &trans        &trans        &trans        &trans        &trans          &kp C_MUTE  &trans      &trans    &trans      &trans        &trans
+   &trans      &trans        &trans        &trans        &trans        &trans          &trans      &trans      &trans    &trans      &trans        &trans
                                            &kp LGUI      &trans        &kp SPACE       &kp RET &trans  &kp DEL
             >;
         };
