@@ -1,0 +1,3 @@
+TRI_LAYER_ENABLE = yes
+CONVERT_TO = sparkfun_pm2040
+OLED_ENABLE = no
