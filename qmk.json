@@ -1,4 +1,4 @@
 {
     "userspace_version": "1.0",
-    "build_targets": ["lily58/rev1:rp2040"]
+    "build_targets": [["lily58/rev1", "rp2040"]]
 }
